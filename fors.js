@@ -28,7 +28,7 @@ const forEach = function(arr,iterator){
 	if(arr){
 		var length = arr.length;
 		var key;
-		for(key=0;key<=length;key++){
+		for(key=0;key<length;key++){
 			if(iterator(arr[key],key)===false){
 				break;
 			}
@@ -168,13 +168,17 @@ const listenSession = function(cb){
 	});
 };
 //our site----------------------------------------------------------------------
-const fRequest = function({proxy,url,method,isAsync,data,xhrProp,headers},cb){
+const fRequest = function({proxy,url,method,isAsync,data,xhrProp,headers},callback){
 	let proxyIf = document.createElement('iframe');
 	proxyIf.src = proxy;
 	proxyIf.style.display = 'none';
 	proxyIf.style.visibility = 'hidden';
 	proxyIf.onload = function(ev){
-		messageSession(this.contentWindow,{url,method,isAsync,data,xhrProp,headers},proxy,cb);
+		messageSession(this.contentWindow,{url,method,isAsync,data,xhrProp,headers},proxy,(...args)=>{
+			document.body.removeChild(proxyIf);
+			proxyIf = null;
+			callback(...args);
+		});
 	};
 	document.body.appendChild(proxyIf);
 };
@@ -200,9 +204,16 @@ const fProxy = function(list){
 		}
 		console.log({source,origin,data});
 		xhrmaker(data.url,data.method,data.isAsync,data.data,data.xhrProp,data.headers,function(ev){
-			console.log(this);
+			console.log(this,ev);
+			let headerArr = this.getAllResponseHeaders().match(/[^\r\n]+/g);
+			let headers = {};
+			forEach(headerArr,header=>{
+				let [,key,val] = header.match(/([^\:]+)\:\s(.+)/);
+				headers[key] = val;
+			});
 			reply({
 				responseText:this.responseText,
+				headers,
 			});
 		});
 	});
