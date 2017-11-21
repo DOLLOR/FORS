@@ -115,7 +115,23 @@ let strobj = input => {
 		return JSON.stringify(input);
 	}
 };
-objmsg = strobj;
+
+let onlyStrings = false;
+
+try {
+	postMessage({
+		toString() {
+			console.log('onlyStrings');
+			onlyStrings = true;
+		}
+	}, "*");
+} catch (er) {
+	console.log('noStrsingsOnly');
+}
+
+if(onlyStrings){
+	objmsg = strobj;
+}
 
 /**
  * post message
@@ -169,17 +185,18 @@ const listenSession = function(cb){
 };
 //our site----------------------------------------------------------------------
 const fRequest = function({proxy,url,method,isAsync,data,xhrProp,headers},callback){
-	let proxyIf = document.createElement('iframe');
-	proxyIf.src = proxy;
-	proxyIf.style.display = 'none';
-	proxyIf.style.visibility = 'hidden';
-	proxyIf.onload = function(ev){
+	let makeRequest = function(){
 		messageSession(this.contentWindow,{url,method,isAsync,data,xhrProp,headers},proxy,(...args)=>{
 			document.body.removeChild(proxyIf);
 			proxyIf = null;
 			callback(...args);
 		});
 	};
+	let proxyIf = document.createElement('iframe');
+	proxyIf.src = proxy;
+	proxyIf.style.display = 'none';
+	proxyIf.style.visibility = 'hidden';
+	proxyIf.onload = makeRequest;
 	document.body.appendChild(proxyIf);
 };
 //their site----------------------------------------------------------------------
@@ -212,8 +229,13 @@ const fProxy = function(list){
 				headers[key] = val;
 			});
 			reply({
-				responseText:this.responseText,
 				headers,
+				response:this.response,
+				responseText:this.responseText,
+				responseType:this.responseType,
+				responseURL:this.responseURL,
+				status:this.status,
+				statusText:this.statusText,
 			});
 		});
 	});
