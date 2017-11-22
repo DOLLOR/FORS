@@ -125,6 +125,7 @@ try {
 	postMessage({
 		toString() {
 			onlyStrings = true;
+			throw new Error('test onlyStrings');
 		}
 	}, "*");
 } catch (er) {}
@@ -227,8 +228,8 @@ const fProxy = function(list){
 			return;
 		}
 		console.log({source,origin,data});
-		xhrmaker(data.url,data.method,data.isAsync,data.data,data.xhrProp,data.headers,function(ev){
-			console.log(this,ev);
+		xhrmaker(data.url,data.method,data.isAsync,data.data,data.xhrProp,data.headers,function(){
+			console.log(this);
 			let headerArr = this.getAllResponseHeaders().match(/[^\r\n]+/g);
 			let headers = {};
 			forEach(headerArr,header=>{
