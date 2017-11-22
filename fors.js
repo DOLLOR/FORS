@@ -116,6 +116,9 @@ let strobj = input => {
 	}
 };
 
+/**
+ * @see {@link https://stackoverflow.com/questions/13761968/detect-whether-postmessage-can-send-objects}
+ */
 let onlyStrings = false;
 
 try {
@@ -184,20 +187,27 @@ const listenSession = function(cb){
 	});
 };
 //our site----------------------------------------------------------------------
-const fRequest = function({proxy,url,method,isAsync,data,xhrProp,headers},callback){
+const fRequest = function({proxy,once,url,method,isAsync,data,xhrProp,headers},callback){
 	let makeRequest = function(){
-		messageSession(this.contentWindow,{url,method,isAsync,data,xhrProp,headers},proxy,(...args)=>{
-			document.body.removeChild(proxyIf);
+		messageSession(proxyIf.contentWindow,{url,method,isAsync,data,xhrProp,headers},proxy,(...args)=>{
+			if(once) document.body.removeChild(proxyIf);
 			proxyIf = null;
 			callback(...args);
 		});
 	};
-	let proxyIf = document.createElement('iframe');
-	proxyIf.src = proxy;
-	proxyIf.style.display = 'none';
-	proxyIf.style.visibility = 'hidden';
-	proxyIf.onload = makeRequest;
-	document.body.appendChild(proxyIf);
+	/**@type {HTMLIFrameElement} */
+	let proxyIf = document.querySelector(`iframe[data-proxy-page="${proxy}"]`);
+	if(!proxyIf){
+		proxyIf = document.createElement('iframe');
+		proxyIf.src = proxy;
+		proxyIf.style.display = 'none';
+		proxyIf.style.visibility = 'hidden';
+		proxyIf.onload = makeRequest;
+		proxyIf.setAttribute('data-proxy-page',proxy);
+		document.body.appendChild(proxyIf);
+	}else{
+		makeRequest();
+	}
 };
 //their site----------------------------------------------------------------------
 /**@type {String[]} */
