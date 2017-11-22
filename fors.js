@@ -124,13 +124,10 @@ let onlyStrings = false;
 try {
 	postMessage({
 		toString() {
-			console.log('onlyStrings');
 			onlyStrings = true;
 		}
 	}, "*");
-} catch (er) {
-	console.log('noStrsingsOnly');
-}
+} catch (er) {}
 
 if(onlyStrings){
 	objmsg = strobj;
