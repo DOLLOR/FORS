@@ -8,9 +8,9 @@ Set `allowList` in `fors-proxy.html`.
 
 >var allowList = ['https://our.site.com', 'http://our.site.org'];
 
-Put `fors-proxy.html` on their site.
+Put `fors-proxy.html` on **their site**.
 
-Request from our site:
+Now request from our site:
 ```javascript
 fors.fRequest({
   proxy:'http://their.site:8888/path/to/fors-proxy.html?s='
