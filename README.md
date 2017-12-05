@@ -4,9 +4,9 @@ Front-end-Only Resource Sharing
 ### USAGE
 Set `allowList` in `fors-proxy.html`.
 
->~~var allowList = ['https://localhost:8889', 'http://localhost:8888'];~~
+~~var allowList = ['https://localhost:8889', 'http://localhost:8888'];~~
 
->var allowList = ['https://our.site.com', 'http://our.site.org'];
+`var allowList = ['https://our.site.com', 'http://our.site.org'];`
 
 Put `fors-proxy.html` on **their site**.
 
