@@ -22,3 +22,20 @@ fors.fRequest({
   console.log(result);
 });
 ```
+
+### API
+```javascript
+/**
+ * fRequest
+ * @param {Object} option - request option
+ * @param {String} option.proxy - fors-proxy.html file url
+ * @param {Boolean} option.once - the iframe will be removed after request if true
+ * @param {String} option.url - target url, from which you want to request data
+ * @param {String} option.method - GET, POST, or one of  other methods
+ * @param {Boolean} option.isAsync - this value will pass to xhr.open() async argument
+ * @param {Object} option.data - request body
+ * @param {Object} option.xhrProp - other props that will past to xhr object
+ * @param {Object} option.headers - request headers
+ * @param {(headers,response,responseText,responseType,responseURL,status,statusText)=>} callback - callback for result
+ */
+```
