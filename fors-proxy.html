@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<title>fors</title>
+<script>
+	!(function(){
+		"use strict";
+		var allowList = ['https://localhost:8889','http://localhost:8888'];
+		var referrer = parseUrl(document.referrer);
+		var origin = referrer.origin || referrer.protocol+'//'+referrer.host;
+		console.log(origin);
+		var allowFlag = false;
+
+		for(
+			var i = 0;
+			i < allowList.length;
+			i++
+		){
+			if(origin===allowList[i]){
+				allowFlag = true;
+				break;
+			}
+		}
+		
+		if(allowFlag){
+			var scriptElement = document.createElement('script');
+			scriptElement.src = decodeURIComponent(location.search.match(/[\?\&]s\=([^\?\&]+)/)[1]);
+			document.write(scriptElement.outerHTML);
+			window.allowList = allowList;
+		}else{
+			throw new Error(origin +' is not in allowList');
+			return;
+		}
+		
+		function parseUrl(url) {
+			var div = document.createElement('div');
+			div.innerHTML = "<a></a>";
+			div.firstChild.href = url; // Ensures that the href is properly escaped
+			div.innerHTML = div.innerHTML; // Run the current innerHTML back through the parser
+			return div.firstChild;
+		}
+	})();
+</script>
+<script>
+	fors.fProxy(window.allowList);
+</script>
