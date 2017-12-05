@@ -107,15 +107,6 @@ let onEvent = function(event,callback,target){
 	return onEvent(event,callback,target);
 };
 //-------------------------------------------------------------------
-let objmsg = obj => obj;
-let strobj = input => {
-	if(input.constructor === String){
-		return JSON.parse(input);
-	}else{
-		return JSON.stringify(input);
-	}
-};
-
 /**
  * @see {@link https://stackoverflow.com/questions/13761968/detect-whether-postmessage-can-send-objects}
  */
@@ -130,8 +121,17 @@ try {
 	}, "*");
 } catch (er) {}
 
+let objmsg;
 if(onlyStrings){
-	objmsg = strobj;
+	objmsg = input => {
+		if(input.constructor === String){
+			return JSON.parse(input);
+		}else{
+			return JSON.stringify(input);
+		}
+	};
+}else{
+	objmsg = obj => obj;
 }
 
 /**
