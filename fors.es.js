@@ -185,7 +185,7 @@ const listenSession = function(cb){
 	});
 };
 //our site----------------------------------------------------------------------
- /**
+/**
  * fRequest
  * @param {Object} option - request option
  * @param {String} option.proxy - fors-proxy.html file url
