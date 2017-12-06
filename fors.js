@@ -211,18 +211,18 @@
     };
     //our site----------------------------------------------------------------------
     /**
-    * fRequest
-    * @param {Object} option - request option
-    * @param {String} option.proxy - fors-proxy.html file url
-    * @param {Boolean} option.once - the iframe will be removed after request if true
-    * @param {String} option.url - target url, from which you want to request data
-    * @param {String} option.method - GET, POST, or one of  other methods
-    * @param {Boolean} option.isAsync - this value will pass to xhr.open() async argument
-    * @param {Object} option.data - request body
-    * @param {Object} option.xhrProp - other props that will past to xhr object
-    * @param {Object} option.headers - request headers
-    * @param {(headers,response,responseText,responseType,responseURL,status,statusText)=>} callback - callback for result
-    */
+     * fRequest
+     * @param {Object} option - request option
+     * @param {String} option.proxy - fors-proxy.html file url
+     * @param {Boolean} option.once - the iframe will be removed after request if true
+     * @param {String} option.url - target url, from which you want to request data
+     * @param {String} option.method - GET, POST, or one of  other methods
+     * @param {Boolean} option.isAsync - this value will pass to xhr.open() async argument
+     * @param {Object} option.data - request body
+     * @param {Object} option.xhrProp - other props that will past to xhr object
+     * @param {Object} option.headers - request headers
+     * @param {(headers,response,responseText,responseType,responseURL,status,statusText)=>} callback - callback for result
+     */
     var fRequest = function (_a, callback) {
         var proxy = _a.proxy, once = _a.once, url = _a.url, method = _a.method, isAsync = _a.isAsync, data = _a.data, xhrProp = _a.xhrProp, headers = _a.headers;
         var makeRequest = function () {
